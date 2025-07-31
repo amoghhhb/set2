@@ -1,0 +1,646 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+/* CSS Custom Properties */
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  --accent-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  --error-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+
+  --bg-primary: #0a0e27;
+  --bg-secondary: #1a1f3a;
+  --bg-tertiary: #2d3561;
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --bg-input: rgba(255, 255, 255, 0.03);
+
+  --text-primary: #ffffff;
+  --text-secondary: #b8c5d6;
+  --text-muted: #8892b0;
+  --text-accent: #64ffda;
+
+  --border-primary: rgba(255, 255, 255, 0.1);
+  --border-secondary: rgba(255, 255, 255, 0.05);
+  --border-focus: rgba(100, 255, 218, 0.5);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.25);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  --transition-fast: 0.15s ease-out;
+  --transition-normal: 0.3s ease-out;
+  --transition-slow: 0.5s ease-out;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* Main Container */
+.binary-workshop {
+  min-height: 100vh;
+  height: 100vh; /* Set fixed height */
+  overflow: hidden; /* Prevent scrolling */
+  width: 100%;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #2d3561 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem; /* Much reduced padding */
+  position: relative;
+}
+
+.binary-workshop::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Content Panel - Changes for expansion */
+.conversion-station {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 2rem;
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  animation: slideUp 0.8s ease-out;
+  margin: 0;
+
+  /* --- START: Added for dynamic height --- */
+  max-height: 500px; /* Initial max-height, adjust as needed for your shortest content */
+  overflow: hidden; /* Hide overflow when not expanded */
+  transition: max-height 0.5s ease-out, padding 0.5s ease-out; /* Smooth transition */
+  /* --- END: Added for dynamic height --- */
+}
+
+/* --- START: Expanded state for content box --- */
+.conversion-station.expanded {
+  max-height: 800px; /* A large enough value to accommodate all possible content including messages */
+  /* You can adjust padding here if the expanded state needs different padding */
+}
+/* --- END: Expanded state for content box --- */
+
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.conversion-station h2 {
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Binary Display */
+.binary-sequence {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-accent);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-primary);
+  display: inline-block;
+  letter-spacing: 3px;
+  margin: 0.75rem 0;
+  animation: binaryGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes binaryGlow {
+  from {
+    filter: drop-shadow(0 0 5px rgba(100, 255, 218, 0.3));
+  }
+  to {
+    filter: drop-shadow(0 0 15px rgba(100, 255, 218, 0.6));
+  }
+}
+
+.conversion-hint {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0.75rem 0 1rem 0;
+  font-style: italic;
+}
+
+/* Input Section */
+.conversion-controls {
+  margin-bottom: 1rem;
+}
+
+.binary-decoder {
+  width: 100%;
+  max-width: 200px;
+  padding: 1rem 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  background: var(--bg-input);
+  border: 2px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  text-align: center;
+  outline: none;
+  transition: all var(--transition-normal);
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* Hide number input arrows */
+.binary-decoder::-webkit-outer-spin-button,
+.binary-decoder::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.binary-decoder[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.binary-decoder:focus {
+  border-color: var(--border-focus);
+  background: var(--bg-card-hover);
+  box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.1);
+}
+
+.binary-decoder:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.binary-decoder::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+/* Button Group - START: Changes for side-by-side layout */
+.button-group { /* Renamed from .button-row in JSX, consistent with previous examples */
+  display: flex; /* Use flexbox */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 1rem; /* Space between buttons */
+  justify-content: center; /* Center buttons horizontally */
+  margin-top: 1.5rem; /* Add top margin if needed after input */
+  margin-bottom: 1rem; /* Add some space below the buttons */
+}
+
+.decode-submit,
+.workshop-next { /* Apply common button styles here */
+  flex-grow: 1; /* Allow buttons to grow */
+  max-width: 250px; /* Max width for individual button */
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bg-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  width: auto; /* Override potential 100% width from previous rules */
+}
+
+/* Specific background for Submit button */
+.decode-submit {
+  background: var(--success-gradient);
+}
+
+/* Specific background for Next button */
+.workshop-next {
+  background: var(--secondary-gradient);
+}
+/* --- END: Changes for side-by-side layout --- */
+
+.decode-submit::before,
+.workshop-next::before { /* Apply shimmer effect to both buttons */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.decode-submit:hover:not(:disabled)::before,
+.workshop-next:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.decode-submit:hover:not(:disabled),
+.workshop-next:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  filter: brightness(1.1);
+}
+
+.decode-submit:disabled,
+.workshop-next:disabled {
+  background: var(--text-muted);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}
+
+/* Status Indicator - START: Changes for animation */
+.result-section { /* New container for result messages */
+  margin-bottom: 1rem; /* Adjust margin as needed */
+  text-align: center;
+}
+
+.status-indicator {
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  margin-bottom: 0.75rem; /* Reduced margin from 1.5rem */
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--bg-input); /* Add a base background for indicators */
+  border: 1px solid var(--border-secondary); /* Add a base border for indicators */
+
+  opacity: 0; /* Start hidden */
+  transform: translateY(10px); /* Start slightly offset */
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out; /* Smooth transition for appearance */
+}
+
+.status-indicator.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* --- END: Changes for animation --- */
+
+.success-indicator {
+  background: rgba(79, 172, 254, 0.1);
+  border: 1px solid rgba(79, 172, 254, 0.3);
+  color: #4facfe;
+  animation: successPulse 0.6s ease-in-out;
+}
+
+.error-indicator {
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  color: #ff6b6b;
+  animation: errorShake 0.6s ease-in-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes errorShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-8px);
+  }
+  75% {
+    transform: translateX(8px);
+  }
+}
+
+/* Timer's Up indicator specific styles */
+.timeout-icon {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+/* Attempts Section */
+.attempts-section {
+  margin-bottom: 1rem;
+}
+
+.attempts-tracker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.attempts-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.attempts-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.attempts-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border-primary);
+  transition: all var(--transition-normal);
+}
+
+.attempts-dot.used {
+  background: var(--error-gradient);
+  box-shadow: 0 0 8px rgba(255, 107, 107, 0.3);
+}
+
+/* --- REMOVED THE SEPARATE .workshop-next SECTION STYLING --- */
+/* It's now integrated into .button-group and its own .workshop-next class */
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .binary-workshop {
+    padding: 1rem 0.5rem;
+  }
+
+  .conversion-station {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+    margin: 0 0.5rem;
+  }
+
+  .conversion-station h2 {
+    font-size: 1.5rem;
+  }
+
+  .binary-sequence {
+    font-size: 2rem;
+    letter-spacing: 3px;
+    padding: 1.25rem;
+  }
+
+  .binary-decoder {
+    max-width: 180px;
+    font-size: 1.25rem;
+  }
+
+  /* --- Responsive adjustment for buttons --- */
+  .button-group {
+    flex-direction: column; /* Stack buttons vertically on small screens */
+    gap: 0.75rem; /* Smaller gap when stacked */
+  }
+
+  .decode-submit,
+  .workshop-next {
+    max-width: 100%; /* Take full width when stacked */
+  }
+  /* --- End responsive adjustment --- */
+}
+
+@media (max-width: 480px) {
+  .conversion-station {
+    padding: 1.5rem 1rem;
+  }
+
+  .conversion-station h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .binary-sequence {
+    font-size: 1.75rem;
+    letter-spacing: 2px;
+    padding: 1rem;
+  }
+
+  .conversion-hint {
+    font-size: 0.9rem;
+  }
+
+  .binary-decoder {
+    max-width: 160px;
+    padding: 0.875rem 1rem;
+    font-size: 1.1rem;
+  }
+
+  .decode-submit,
+  .workshop-next {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Hamburger Menu */
+.nav-toggle {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  cursor: pointer;
+  z-index: 100;
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 0.75rem;
+  border-radius: 50%;
+  border: 1px solid var(--border-primary);
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-md);
+}
+
+.nav-toggle:hover {
+  background: var(--bg-card-hover);
+  transform: scale(1.05);
+}
+
+.toggle-bar {
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+  margin: 4px 0;
+  transition: all var(--transition-normal);
+  border-radius: 2px;
+}
+
+.nav-toggle.active .toggle-bar:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.nav-toggle.active .toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.active .toggle-bar:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Menu Content */
+.info-panel {
+  position: fixed;
+  top: 5rem;
+  right: 2rem;
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: var(--text-primary);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  width: 300px;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-xl);
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all var(--transition-normal);
+}
+
+.info-panel.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.panel-header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-secondary);
+}
+
+.info-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-secondary);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-item strong {
+  color: var(--text-primary);
+}
+
+
+/* Binary Places Display (inside info-panel) */
+.binary-places, .binary-digits {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+}
+
+.binary-places span, .binary-digits span {
+  flex: 1; /* Make them take equal space */
+  text-align: center;
+  padding: 0.25rem;
+}
+
+.binary-places span {
+  font-weight: bold;
+  color: var(--text-accent);
+  background: rgba(100, 255, 218, 0.1);
+  border-radius: var(--radius-sm);
+}
+
+.binary-digits span {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg-input);
+  border-radius: var(--radius-sm);
+}
+
+/* Responsive adjustments for Hamburger/Tip Panel */
+@media (max-width: 768px) {
+  .nav-toggle {
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 25px;
+  }
+
+  .info-panel {
+    width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .info-panel {
+    width: calc(100% - 3rem);
+    right: 1.5rem;
+    left: 1.5rem;
+  }
+}

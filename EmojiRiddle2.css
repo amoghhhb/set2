@@ -1,0 +1,663 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+/* CSS Custom Properties */
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  --accent-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  --error-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+
+  --bg-primary: #0a0e27;
+  --bg-secondary: #1a1f3a;
+  --bg-tertiary: #2d3561;
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --bg-input: rgba(255, 255, 255, 0.03);
+
+  --text-primary: #ffffff;
+  --text-secondary: #b8c5d6;
+  --text-muted: #8892b0;
+  --text-accent: #64ffda;
+
+  --border-primary: rgba(255, 255, 255, 0.1);
+  --border-secondary: rgba(255, 255, 255, 0.05);
+  --border-focus: rgba(100, 255, 218, 0.5);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.25);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  --transition-fast: 0.15s ease-out;
+  --transition-normal: 0.3s ease-out;
+  --transition-slow: 0.5s ease-out;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* Main Container */
+.symbol-chamber {
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  padding: 0.25rem; /* Further reduced */
+  width: 100%;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #2d3561 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.symbol-chamber::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Content Card */
+.chamber-content {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg); /* Reduced from xl */
+  padding: 1rem 1.5rem; /* Much smaller padding */
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 600px; /* Reduced from 700px */
+  position: relative;
+  z-index: 1;
+  animation: slideUp 0.8s ease-out;
+  margin: 0;
+  max-height: 500px; /* Initial max-height, adjust if your content's minimum height is larger */
+  overflow: hidden; /* Hide overflow during transition */
+  transition: max-height 0.5s ease-out, padding 0.5s ease-out; /* Smooth transition */
+}
+
+.chamber-content.expanded {
+  max-height: 800px; /* Large enough to accommodate expanded content with indicators and two buttons */
+}
+
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.riddle-header {
+  text-align: center;
+  margin-bottom: 1rem; /* Reduced from 1.5rem */
+}
+
+.chamber-title {
+  font-size: clamp(1.1rem, 3vw, 1.5rem); /* Much smaller */
+  font-weight: 700;
+  margin: 0 0 0.5rem 0; /* Reduced margin */
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Hamburger Menu */
+.nav-toggle {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  cursor: pointer;
+  z-index: 100;
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 0.75rem;
+  border-radius: 50%;
+  border: 1px solid var(--border-primary);
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-md);
+}
+
+.nav-toggle:hover {
+  background: var(--bg-card-hover);
+  transform: scale(1.05);
+}
+
+.toggle-bar {
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+  margin: 4px 0;
+  transition: all var(--transition-normal);
+  border-radius: 2px;
+}
+
+.nav-toggle.active .toggle-bar:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.nav-toggle.active .toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.active .toggle-bar:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Menu Content */
+.info-panel {
+  position: fixed;
+  top: 5rem;
+  right: 2rem;
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: var(--text-primary);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  width: 300px;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-xl);
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all var(--transition-normal);
+}
+
+.info-panel.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.panel-header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-secondary);
+}
+
+.info-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-secondary);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-item strong {
+  color: var(--text-primary);
+}
+
+
+/* Symbol Problem Section */
+.symbol-problem {
+  margin-bottom: 1rem; /* Reduced from 1.5rem */
+}
+
+.symbol-workspace {
+  background: var(--bg-input);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md); /* Reduced from lg */
+  padding: 1rem; /* Reduced from 1.5rem */
+  text-align: center;
+}
+
+.symbol-heading {
+  font-size: 1rem; /* Reduced from 1.25rem */
+  font-weight: 600;
+  margin: 0 0 1rem 0; /* Reduced margin */
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.symbol-emoji {
+  font-size: 1.5rem;
+}
+
+.symbol-showcase {
+  margin: 0.75rem 0; /* Reduced */
+  padding: 1rem; /* Reduced from 1.5rem */
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-secondary);
+}
+
+.emoji-formula {
+  font-size: 2rem; /* Reduced from 2.5rem */
+  line-height: 1.2;
+  margin: 0;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.symbol-instructions {
+  margin-top: 1rem; /* Reduced from 1.5rem */
+}
+
+.instruction-heading {
+  font-size: 0.9rem; /* Reduced from 1rem */
+  font-weight: 600;
+  margin: 0 0 0.5rem 0; /* Reduced margin */
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.instruction-text {
+  font-size: 0.85rem; /* Reduced from 0.95rem */
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4; /* Reduced line height */
+}
+
+/* Word Section */
+.word-section {
+  margin-bottom: 1rem; /* Reduced from 1.5rem */
+}
+
+.word-inputs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* Reduced from 0.75rem */
+  flex-wrap: wrap;
+  margin-bottom: 1rem; /* Reduced from 1.5rem */
+}
+
+.word-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.word-field {
+  width: 100px; /* Reduced from 120px */
+  padding: 0.75rem; /* Reduced from 0.875rem */
+  font-size: 0.9rem; /* Reduced from 1rem */
+  font-weight: 500;
+  background: var(--bg-input);
+  border: 2px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  text-align: center;
+  outline: none;
+  transition: all var(--transition-normal);
+  font-family: inherit;
+}
+
+.word-counter {
+  font-size: 0.7rem; /* Reduced from 0.8rem */
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.word-separator {
+  font-size: 1.25rem; /* Reduced from 1.5rem */
+  font-weight: 700;
+  color: var(--text-accent);
+  margin: 0 0.25rem; /* Reduced margin */
+}
+
+/* --- Changes for buttons layout --- */
+.word-form {
+  text-align: center;
+  display: flex; /* Use flexbox */
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  gap: 1rem; /* Space between buttons */
+  justify-content: center; /* Center buttons horizontally */
+  margin-bottom: 1rem; /* Add some space below the buttons */
+}
+
+.word-submit,
+.advance-button {
+  flex-grow: 1; /* Allow buttons to grow */
+  max-width: 250px; /* Max width for individual button */
+  /* Remove width: 100% and max-width from .word-submit if it's there */
+  width: auto; /* Let content dictate width within max-width */
+}
+/* --- End changes --- */
+
+.word-submit {
+  padding: 0.875rem 1.5rem; /* Reduced padding */
+  font-size: 1rem; /* Reduced from 1.1rem */
+  font-weight: 600;
+  color: var(--bg-primary);
+  background: var(--success-gradient);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.word-submit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.word-submit:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.word-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  filter: brightness(1.1);
+}
+
+.word-submit:disabled {
+  background: var(--text-muted);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}
+
+/* Result Section */
+.result-section {
+  margin-bottom: 1rem; /* Reduced from 1.5rem */
+  text-align: center;
+}
+
+/* Status Indicator */
+.status-indicator {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border-secondary);
+
+  opacity: 0; /* Start hidden */
+  transform: translateY(10px); /* Start slightly offset */
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out; /* Smooth transition for appearance */
+}
+
+.status-indicator.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.success-indicator {
+  background: rgba(79, 172, 254, 0.1);
+  border: 1px solid rgba(79, 172, 254, 0.3);
+  color: #4facfe;
+  animation: successPulse 0.6s ease-in-out;
+}
+
+.error-indicator {
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  color: #ff6b6b;
+  animation: errorShake 0.6s ease-in-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes errorShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-8px);
+  }
+  75% {
+    transform: translateX(8px);
+  }
+}
+
+.timeout-icon {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+/* Progress Section */
+.tries-section {
+  margin-bottom: 1rem; /* Reduced from 1.5rem */
+}
+
+.tries-tracker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.tries-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tries-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tries-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border-primary);
+  transition: all var(--transition-normal);
+}
+
+.tries-dot.used {
+  background: var(--error-gradient);
+  box-shadow: 0 0 8px rgba(255, 107, 107, 0.3);
+}
+
+/* --- Removed the .advance-section block as its content is moved --- */
+/* If you had specific styling for .advance-section that's not general to buttons,
+   you might need to re-evaluate where to apply it. */
+
+.advance-button {
+  /* Inherits general button styles from .word-submit, if desired, or define specifically */
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bg-primary);
+  background: var(--secondary-gradient);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.advance-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  filter: brightness(1.1);
+}
+
+.advance-button:disabled {
+  background: var(--text-muted);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}
+
+.advance-arrow {
+  font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .symbol-chamber {
+    padding: 1rem 0.5rem;
+  }
+
+  .chamber-content {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+    margin: 0 0.5rem;
+  }
+
+  .chamber-title {
+    font-size: 1.75rem;
+  }
+
+  .emoji-formula {
+    font-size: 2rem;
+  }
+
+  .word-inputs {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .word-separator {
+    transform: rotate(90deg);
+    margin: 0;
+  }
+
+  .word-field {
+    width: 150px;
+  }
+
+  /* --- Responsive adjustment for buttons --- */
+  .word-form {
+    flex-direction: column; /* Stack buttons vertically on small screens */
+    gap: 0.75rem; /* Smaller gap when stacked */
+  }
+
+  .word-submit,
+  .advance-button {
+    max-width: 100%; /* Take full width when stacked */
+  }
+  /* --- End responsive adjustment --- */
+}
+
+@media (max-width: 480px) {
+  .chamber-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .symbol-workspace {
+    padding: 1.5rem;
+  }
+
+  .symbol-showcase {
+    padding: 1.5rem;
+  }
+
+  .emoji-formula {
+    font-size: 1.75rem;
+  }
+
+  .word-field {
+    width: 140px;
+    padding: 0.75rem;
+  }
+}
+
+/* Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

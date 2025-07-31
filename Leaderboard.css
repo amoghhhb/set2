@@ -1,0 +1,657 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+/* CSS Custom Properties */
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  --accent-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  --error-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+
+  --bg-primary: #0a0e27;
+  --bg-secondary: #1a1f3a;
+  --bg-tertiary: #2d3561;
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --bg-input: rgba(255, 255, 255, 0.03);
+
+  --text-primary: #ffffff;
+  --text-secondary: #b8c5d6;
+  --text-muted: #8892b0;
+  --text-accent: #64ffda;
+
+  --border-primary: rgba(255, 255, 255, 0.1);
+  --border-secondary: rgba(255, 255, 255, 0.05);
+  --border-focus: rgba(100, 255, 218, 0.5);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.25);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  --transition-fast: 0.15s ease-out;
+  --transition-normal: 0.3s ease-out;
+  --transition-slow: 0.5s ease-out;
+}
+/* Global reset for scrolling */
+html,
+body {
+  height: auto !important;
+  overflow: visible !important;
+  margin: 0;
+  padding: 0;
+}
+
+#__next,
+[data-nextjs-scroll-focus-boundary] {
+  height: auto !important;
+  overflow: visible !important;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+/* Main Container - Normal page element, no height restrictions */
+.scoreboard-arena {
+  width: 100%;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #2d3561 100%);
+  padding: 2rem 1rem;
+  position: relative;
+  /* Removed all height and overflow constraints */
+}
+
+.scoreboard-arena::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Loading State */
+.loading-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  position: relative;
+  z-index: 1;
+}
+
+.loading-animation {
+  width: 60px;
+  height: 60px;
+  border: 4px solid var(--border-primary);
+  border-top: 4px solid var(--text-accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-message {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Rankings Panel */
+.rankings-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-xl);
+  padding: 3rem 2.5rem;
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 900px;
+  position: relative;
+  z-index: 1;
+  animation: slideUp 0.8s ease-out;
+  margin: 0 auto 2rem auto;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header */
+.rankings-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.rankings-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.offline-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: rgba(250, 112, 154, 0.1);
+  border: 1px solid rgba(250, 112, 154, 0.3);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: #fa709a;
+  margin-top: 1rem;
+}
+
+.offline-dot {
+  width: 8px;
+  height: 8px;
+  background: #fa709a;
+  border-radius: 50%;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Performance Overview */
+.performance-overview {
+  margin-bottom: 3rem;
+}
+
+.overview-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  color: var(--text-primary);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.performance-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.performance-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.performance-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-gradient);
+}
+
+.performance-card:hover {
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-symbol {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.card-number {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* Rankings Section */
+.rankings-section {
+  margin-bottom: 2rem;
+}
+
+/* Rankings Wrapper - REMOVED max-height and overflow-y to allow full page scrolling */
+.rankings-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-primary);
+  /* Removed: max-height: 400px; overflow-y: auto; */
+}
+
+.rankings-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-input);
+  font-size: 0.95rem;
+}
+
+.rankings-table th {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-weight: 600;
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+  /* Removed sticky positioning since we want full page scroll */
+}
+
+.rankings-table th:first-child {
+  text-align: center;
+}
+.rankings-table th:last-child {
+  text-align: center;
+}
+
+.rankings-row {
+  transition: all var(--transition-normal);
+  border-bottom: 1px solid var(--border-secondary);
+}
+
+.rankings-row:hover {
+  background: var(--bg-card-hover);
+}
+
+.rankings-row:last-child {
+  border-bottom: none;
+}
+
+.current-player {
+  background: rgba(100, 255, 218, 0.05);
+  border-left: 4px solid var(--text-accent);
+}
+
+.current-player:hover {
+  background: rgba(100, 255, 218, 0.08);
+}
+
+.rankings-table td {
+  padding: 1rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.rank-column {
+  text-align: center;
+  font-weight: 700;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.player-column {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.dept-column {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.duration-column,
+.points-column {
+  text-align: center;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 600;
+}
+
+.points-column {
+  color: var(--text-accent);
+}
+
+/* Trophy Styling */
+.trophy {
+  font-size: 1.5rem;
+  display: inline-block;
+  animation: trophy-glow 2s ease-in-out infinite alternate;
+}
+
+.trophy-1 {
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+}
+
+.trophy-2 {
+  filter: drop-shadow(0 0 8px rgba(192, 192, 192, 0.6));
+}
+
+.trophy-3 {
+  filter: drop-shadow(0 0 8px rgba(205, 127, 50, 0.6));
+}
+
+@keyframes trophy-glow {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+/* Podium Styling */
+.podium-1 {
+  background: rgba(255, 215, 0, 0.05);
+}
+.podium-2 {
+  background: rgba(192, 192, 192, 0.05);
+}
+.podium-3 {
+  background: rgba(205, 127, 50, 0.05);
+}
+
+/* Error State */
+.error-zone {
+  text-align: center;
+  padding: 2rem;
+}
+
+.error-symbol {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.error-heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+}
+
+.error-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+}
+
+.player-summary {
+  background: var(--bg-input);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.player-summary h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.summary-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-secondary);
+}
+
+.stat-name {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.stat-data {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.reconnect-btn {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bg-primary);
+  background: var(--success-gradient);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: var(--shadow-md);
+  margin: 1rem 0;
+}
+
+.reconnect-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  filter: brightness(1.1);
+}
+
+.reconnect-btn:disabled {
+  background: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.server-info {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: var(--bg-input);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-secondary);
+}
+
+.server-info p {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.server-url {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+  color: var(--text-accent);
+  background: var(--bg-card);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+/* Footer */
+.rankings-footer {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-secondary);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.sync-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.sync-symbol {
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .scoreboard-arena {
+    padding: 1rem 0.5rem;
+  }
+
+  .rankings-panel {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+    margin: 0 0.5rem 2rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .rankings-title {
+    font-size: 2rem;
+  }
+
+  .performance-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .performance-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .card-number {
+    font-size: 1.5rem;
+  }
+
+  .rankings-table {
+    font-size: 0.85rem;
+    min-width: 600px;
+  }
+
+  .rankings-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .rankings-table th,
+  .rankings-table td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .trophy {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .rankings-panel {
+    padding: 1.5rem 1rem;
+  }
+
+  .rankings-title {
+    font-size: 1.75rem;
+    letter-spacing: 1px;
+  }
+
+  .overview-title {
+    font-size: 1.25rem;
+  }
+
+  .performance-card {
+    padding: 1.25rem 0.875rem;
+  }
+
+  .card-symbol {
+    font-size: 1.75rem;
+  }
+
+  .card-number {
+    font-size: 1.25rem;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .player-summary {
+    padding: 1.5rem;
+  }
+}
+
+/* Accessibility */
+.no-data-row td {
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 2rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

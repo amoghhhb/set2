@@ -1,0 +1,467 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+/* CSS Custom Properties */
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  --accent-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  --error-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  --bg-primary: #0a0e27;
+  --bg-secondary: #1a1f3a;
+  --bg-tertiary: #2d3561;
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --bg-input: rgba(255, 255, 255, 0.03);
+  --text-primary: #ffffff;
+  --text-secondary: #b8c5d6;
+  --text-muted: #8892b0;
+  --text-accent: #64ffda;
+  --border-primary: rgba(255, 255, 255, 0.1);
+  --border-secondary: rgba(255, 255, 255, 0.05);
+  --border-focus: rgba(100, 255, 218, 0.5);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.25);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --transition-fast: 0.15s ease-out;
+  --transition-normal: 0.3s ease-out;
+  --transition-slow: 0.5s ease-out;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* Main Container - NEVER CHANGES */
+.detective-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #2d3561 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  position: relative;
+}
+
+.detective-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Header */
+.mystery-title {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 700;
+  margin: 0 0 2rem 0;
+  background: var(--warning-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    filter: drop-shadow(0 0 5px rgba(250, 112, 154, 0.3));
+  }
+  to {
+    filter: drop-shadow(0 0 20px rgba(250, 112, 154, 0.6));
+  }
+}
+
+/* Content Panel - START: Changes for expansion */
+.investigation-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: none;
+  border-radius: var(--radius-xl);
+  padding: 3.5rem 3rem;
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  animation: slideUp 0.8s ease-out;
+
+  max-height: 550px; /* Adjust initial max-height to fit content without messages */
+  overflow: hidden; /* Hide content when not expanded */
+  transition: max-height 0.5s ease-out, padding 0.5s ease-out; /* Smooth transition */
+}
+
+/* --- Expanded state --- */
+.investigation-panel.expanded {
+  max-height: 800px; /* Sufficiently large value for expanded content */
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.riddle-text {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0 0 2rem 0;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* Form Section */
+.verification-form {
+  margin-bottom: 0;
+}
+
+.code-input-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: stretch;
+}
+
+.secret-code-field {
+  flex: 1;
+  padding: 1rem 1.25rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  background: var(--bg-input);
+  border: 2px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  text-align: center;
+  outline: none;
+  transition: all var(--transition-normal);
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* Hide number input arrows */
+.secret-code-field::-webkit-outer-spin-button,
+.secret-code-field::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.secret-code-field[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.secret-code-field:focus {
+  border-color: var(--border-focus);
+  background: var(--bg-card-hover);
+  box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.1);
+}
+
+.secret-code-field:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.secret-code-field::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Button Group for Verify and Next Clue */
+.combined-buttons-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.verify-btn,
+.proceed-btn {
+  padding: 0.8rem 2rem; /* Increased top/bottom padding for more height */
+  font-size: 1rem; /* Slightly increased font size for better fit */
+  font-weight: 600;
+  color: var(--bg-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  width: 100%; /* Default to full width on small screens if not explicitly constrained by flex-basis */
+  display: flex;
+  align-items: center; /* Vertically center content */
+  justify-content: center; /* Horizontally center content */
+}
+
+/* Specific background for Verify button */
+.verify-btn {
+  background: var(--success-gradient);
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 120px;
+  max-width: 120px;
+}
+
+/* Specific background for Proceed button */
+.proceed-btn {
+  background: var(--secondary-gradient);
+  flex-grow: 1;
+  max-width: 300px; /* Increased from 250px */
+}
+
+
+.proceed-btn span {
+  position: relative;
+  top: -0.2em; /* Adjust this value to move the emoji upwards. Negative value moves it up. */
+}
+
+.verify-btn::before,
+.proceed-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.verify-btn:hover:not(:disabled)::before,
+.proceed-btn:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.verify-btn:hover:not(:disabled),
+.proceed-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  filter: brightness(1.1);
+}
+
+.verify-btn:disabled,
+.proceed-btn:disabled {
+  background: var(--text-muted);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}
+
+
+/* Status Indicator - START: Changes for animation */
+.result-section {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.status-indicator {
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border-secondary);
+
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.status-indicator.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* --- END: Changes for animation --- */
+
+
+.success-indicator {
+  background: rgba(79, 172, 254, 0.1);
+  border: 1px solid rgba(79, 172, 254, 0.3);
+  color: #4facfe;
+  animation: successPulse 0.6s ease-in-out;
+}
+
+.error-indicator {
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  color: #ff6b6b;
+  animation: errorShake 0.6s ease-in-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes errorShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-8px);
+  }
+  75% {
+    transform: translateX(8px);
+  }
+}
+
+/* Attempts Section */
+.attempts-section {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.attempts-tracker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.attempts-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.attempts-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.attempts-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border-primary);
+  transition: all var(--transition-normal);
+}
+
+.attempts-dot.used {
+  background: var(--error-gradient);
+  box-shadow: 0 0 8px rgba(255, 107, 107, 0.3);
+}
+
+/* Hidden Clue text style - Ensure it's hidden properly */
+.investigation-panel p[style*="display: none"] {
+  display: none !important; /* Force hide if inline style is used */
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .detective-wrapper {
+    padding: 1rem 0.5rem;
+  }
+  .investigation-panel {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+    margin: 0 0.5rem;
+  }
+  .mystery-title {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .code-input-section {
+    flex-direction: column; /* Stack input and verify button on small screens */
+    gap: 1rem;
+  }
+  .combined-buttons-group { /* Stack verify and proceed buttons on small screens */
+    flex-direction: column;
+    gap: 0.75rem; /* Smaller gap when stacked */
+  }
+  .verify-btn,
+  .proceed-btn {
+    width: 100%;
+    max-width: 100%; /* Take full width when stacked */
+  }
+}
+
+@media (max-width: 480px) {
+  .investigation-panel {
+    padding: 1.5rem 1rem;
+  }
+  .mystery-title {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+  .riddle-text {
+    font-size: 1rem;
+  }
+  .secret-code-field {
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+  }
+  /* --- START: Smaller screen button adjustments --- */
+  .verify-btn,
+  .proceed-btn {
+    padding: 0.7rem 1.5rem; /* Even less padding for height */
+    font-size: 0.85rem; /* Even smaller font */
+  }
+  /* --- END: Smaller screen button adjustments --- */
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
