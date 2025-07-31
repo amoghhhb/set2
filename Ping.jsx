@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import "./ping.css"
+import "./Ping.css"
 
 const Ping = ({ timer, TimerDisplay, onNext }) => {
   const [answer, setAnswer] = useState("")
